@@ -99,7 +99,11 @@
 
             const removeLink = document.createElement("button");
             removeLink.append("Удалить");
-            removeLink.addEventListener("click", async () => await deleteUser(task.id));
+            removeLink.addEventListener("click", async () => 
+            {
+                li.remove();
+                await deleteUser(task.id);
+            });
 
             linksP.append(removeLink);
             li.append(linksP);
@@ -137,7 +141,7 @@
             if (response.ok === true) {
                 const user = await response.json();
                 var task = document.querySelector(`#taskLineId[value='${user.id}']`);
-                task.innerHTML = '';
+                task.remove();
             }
             else {
                 const error = await response.json();
