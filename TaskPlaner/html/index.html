@@ -101,11 +101,10 @@
             removeLink.append("Удалить");
             removeLink.addEventListener("click", async () => 
             {
-                li.remove();
                 await deleteUser(task.id);
             });
-
             linksP.append(removeLink);
+
             li.append(linksP);
 
             return li;
@@ -140,7 +139,7 @@
             });
             if (response.ok === true) {
                 const user = await response.json();
-                var task = document.querySelector(`#taskLineId[value='${user.id}']`);
+                var task = document.querySelector(`#taskLineId[value='${user.id}']`).parentNode;
                 task.remove();
             }
             else {
@@ -176,7 +175,7 @@
             });
             if (response.ok === true) {
                 const user = await response.json();
-                document.querySelector(`tr[data-rowid='${user.id}']`).replaceWith(row(user));
+                document.querySelector(`#taskLineId[value='${user.id}']`).parentNode.replaceWith(taskLine(user));
             }
             else {
                 const error = await response.json();
