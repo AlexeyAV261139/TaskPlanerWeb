@@ -12,19 +12,25 @@
         <section>
             <h2>Планировщик задач</h2>
             <article>
-                <input type="hidden" id="taskId" />
-                <p>
-                    Название:<br />
-                    <input id="heading" />
-                </p>
-                <p>
-                    Содержание:<br />
-                    <input id="content" />
-                </p>
-                <p>
-                    <button id="saveBtn">Сохранить</button>
-                    <button id="resetBtn">Сбросить</button>
-                </p>
+                <div class="mainForm">                    
+                    <input type="hidden" id="taskId" />
+                    <p>
+                        Название:<br />
+                        <input id="heading" />
+                    </p>
+                    <p>
+                        Содержание:<br />
+                        <input id="content" />
+                    </p>
+                    <p>
+                        Дата:<br />
+                        <input id="date" />
+                    </p>
+                    <p>
+                        <button id="saveBtn">Сохранить</button>
+                        <button id="resetBtn">Сбросить</button>
+                    </p>
+                </div>
             </article>
         </section>
         <section>
@@ -62,7 +68,9 @@
             if (response.ok === true) {
                 const task = await response.json();
                 document.getElementById("taskId").value = task.id;
+                document.getElementById("heading").value = task.heading;
                 document.getElementById("content").value = task.content;
+                document.getElementById('date').value = task.value;
             }
             else {
                 // если произошла ошибка, получаем сообщение об ошибке
@@ -73,8 +81,13 @@
 
         // сброс данных формы после отправки
         function reset() {
-            document.getElementById("taskId").value =
-                document.getElementById("content").value = "";
+            document.querySelectorAll('.mainForm input').forEach((item) => {
+                item.value = "";    
+            });
+            
+           // document.getElementById("taskId").value =
+             //   document.getElementById("heading").value =
+               // document.getElementById("content").value = "";
         }
 
         // создание блока задачи
@@ -87,7 +100,15 @@
             id.setAttribute("id", "taskLineId");
             id.value = task.id
             li.append(id);
-            li.append(task.content)         
+
+            li.append(task.heading);
+            li.append(document.createElement('br'));
+
+            li.append(task.content);
+            li.append(document.createElement('br'));
+
+            li.append(task.date)
+
 
 
             const linksP = document.createElement("p");
@@ -99,8 +120,7 @@
 
             const removeLink = document.createElement("button");
             removeLink.append("Удалить");
-            removeLink.addEventListener("click", async () => 
-            {
+            removeLink.addEventListener("click", async () => {
                 await deleteUser(task.id);
             });
             linksP.append(removeLink);
@@ -111,12 +131,13 @@
         }
 
         // Добавление пользователя
-        async function createTask(newContent) {
+        async function createTask(newContent, heading) {
 
             const response = await fetch("api/tasks", {
                 method: "POST",
                 headers: { "Accept": "application/json", "Content-Type": "application/json" },
                 body: JSON.stringify({
+                    heading: heading,
                     content: newContent,
                 })
             });
@@ -155,21 +176,23 @@
         document.getElementById("saveBtn").addEventListener("click", async () => {
 
             const id = document.getElementById("taskId").value;
+            const heading = document.getElementById("heading").value
             const content = document.getElementById("content").value;
             if (id === "")
-                await createTask(content);
+                await createTask(content, heading);
             else
-                await editTask(id, content);
+                await editTask(id, heading, content);
             reset();
         });
 
         // Изменение пользователя
-        async function editTask(taskId, content) {
+        async function editTask(taskId, heading, content) {
             const response = await fetch("api/tasks", {
                 method: "PUT",
                 headers: { "Accept": "application/json", "Content-Type": "application/json" },
                 body: JSON.stringify({
                     id: taskId,
+                    heading: heading,
                     content: content,
                 })
             });
