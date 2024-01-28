@@ -139,7 +139,9 @@ async Task UpdateMyTask(HttpResponse response, HttpRequest request)
                 // если пользователь найден, изменяем его данные и отправляем обратно клиенту
                 if (myTask != null)
                 {
+                    myTask.Heading = myTaskData.Heading;
                     myTask.Content = myTaskData.Content;
+                    myTask.Date = myTaskData.Date;
                     db.SaveChanges();
                     await response.WriteAsJsonAsync(myTask);
                 }

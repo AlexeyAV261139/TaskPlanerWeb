@@ -12,7 +12,7 @@
         <section>
             <h2>Планировщик задач</h2>
             <article>
-                <div class="mainForm">                    
+                <div class="mainForm">
                     <input type="hidden" id="taskId" />
                     <p>
                         Название:<br />
@@ -24,7 +24,7 @@
                     </p>
                     <p>
                         Дата:<br />
-                        <input id="date" />
+                        <input type="date" id="date" />
                     </p>
                     <p>
                         <button id="saveBtn">Сохранить</button>
@@ -70,25 +70,14 @@
                 document.getElementById("taskId").value = task.id;
                 document.getElementById("heading").value = task.heading;
                 document.getElementById("content").value = task.content;
-                document.getElementById('date').value = task.value;
+                document.getElementById('date').value = task.date;
             }
             else {
                 // если произошла ошибка, получаем сообщение об ошибке
                 const error = await response.json();
                 console.log(error.message); // и выводим его на консоль
             }
-        }
-
-        // сброс данных формы после отправки
-        function reset() {
-            document.querySelectorAll('.mainForm input').forEach((item) => {
-                item.value = "";    
-            });
-            
-           // document.getElementById("taskId").value =
-             //   document.getElementById("heading").value =
-               // document.getElementById("content").value = "";
-        }
+        }       
 
         // создание блока задачи
         function taskLine(task) {
@@ -130,8 +119,30 @@
             return li;
         }
 
+
+
+        
+
+        // сброс значений формы
+        document.getElementById("resetBtn").addEventListener("click", () => reset());
+
+        // отправка формы
+        document.getElementById("saveBtn").addEventListener("click", async () => {
+
+            const id = document.getElementById("taskId").value;
+            const heading = document.getElementById("heading").value
+            const content = document.getElementById("content").value;
+            const date = document.getElementById("date").value;
+
+            if (id === "")
+                await createTask(content, heading, date);
+            else
+                await editTask(id, heading, content, date);
+            reset();
+        });
+
         // Добавление пользователя
-        async function createTask(newContent, heading) {
+        async function createTask(newContent, heading, date) {
 
             const response = await fetch("api/tasks", {
                 method: "POST",
@@ -139,12 +150,35 @@
                 body: JSON.stringify({
                     heading: heading,
                     content: newContent,
+                    date: date
                 })
             });
             if (response.ok === true) {
                 const user = await response.json();
                 const tasks = document.getElementById("tasks");
                 tasks.append(taskLine(user));
+            }
+            else {
+                const error = await response.json();
+                console.log(error.message);
+            }
+        }
+
+        // Изменение пользователя
+        async function editTask(taskId, heading, content, date) {
+            const response = await fetch("api/tasks", {
+                method: "PUT",
+                headers: { "Accept": "application/json", "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    id: taskId,
+                    heading: heading,
+                    content: content,
+                    date: date
+                })
+            });
+            if (response.ok === true) {
+                const user = await response.json();
+                document.querySelector(`#taskLineId[value='${user.id}']`).parentNode.replaceWith(taskLine(user));
             }
             else {
                 const error = await response.json();
@@ -169,41 +203,11 @@
             }
         }
 
-        // сброс значений формы
-        document.getElementById("resetBtn").addEventListener("click", () => reset());
-
-        // отправка формы
-        document.getElementById("saveBtn").addEventListener("click", async () => {
-
-            const id = document.getElementById("taskId").value;
-            const heading = document.getElementById("heading").value
-            const content = document.getElementById("content").value;
-            if (id === "")
-                await createTask(content, heading);
-            else
-                await editTask(id, heading, content);
-            reset();
-        });
-
-        // Изменение пользователя
-        async function editTask(taskId, heading, content) {
-            const response = await fetch("api/tasks", {
-                method: "PUT",
-                headers: { "Accept": "application/json", "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    id: taskId,
-                    heading: heading,
-                    content: content,
-                })
+         // сброс данных формы после отправки
+         function reset() {
+            document.querySelectorAll('.mainForm input').forEach((item) => {
+                item.value = "";
             });
-            if (response.ok === true) {
-                const user = await response.json();
-                document.querySelector(`#taskLineId[value='${user.id}']`).parentNode.replaceWith(taskLine(user));
-            }
-            else {
-                const error = await response.json();
-                console.log(error.message);
-            }
         }
 
         getTasks();
