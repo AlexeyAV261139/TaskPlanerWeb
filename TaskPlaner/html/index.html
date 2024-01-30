@@ -27,6 +27,10 @@
                         <input type="date" id="date" />
                     </p>
                     <p>
+                        Приоритет задачи: <br />
+                        <input type="number" id="priority" />
+                    </p>
+                    <p>
                         <button id="saveBtn">Сохранить</button>
                         <button id="resetBtn">Сбросить</button>
                     </p>
@@ -37,12 +41,12 @@
             <article>
                 <h3>Задачи:</h3>
                 <ul id="tasks">
-
                 </ul>
+
+
             </article>
         </section>
     </main>
-
     <script>
         async function getTasks() {
             // отправляет запрос и получаем ответ
@@ -71,24 +75,30 @@
                 document.getElementById("heading").value = task.heading;
                 document.getElementById("content").value = task.content;
                 document.getElementById('date').value = task.date;
+                document.getElementById('priority').value = task.priority;
             }
             else {
                 // если произошла ошибка, получаем сообщение об ошибке
                 const error = await response.json();
                 console.log(error.message); // и выводим его на консоль
             }
-        }       
+        }
 
         // создание блока задачи
         function taskLine(task) {
 
             let li = document.createElement('li');
             li.className = "taskLine";
+
             let id = document.createElement('input');
             id.setAttribute("type", "hidden");
             id.setAttribute("id", "taskLineId");
             id.value = task.id
             li.append(id);
+
+            li.append(task.priority);
+            li.append(document.createElement('br'));
+
 
             li.append(task.heading);
             li.append(document.createElement('br'));
@@ -97,8 +107,6 @@
             li.append(document.createElement('br'));
 
             li.append(task.date)
-
-
 
             const linksP = document.createElement("p");
 
@@ -119,10 +127,6 @@
             return li;
         }
 
-
-
-        
-
         // сброс значений формы
         document.getElementById("resetBtn").addEventListener("click", () => reset());
 
@@ -133,24 +137,27 @@
             const heading = document.getElementById("heading").value
             const content = document.getElementById("content").value;
             const date = document.getElementById("date").value;
+            const priority = document.getElementById("priority").value;
 
             if (id === "")
-                await createTask(content, heading, date);
+                await createTask(content, heading, date, priority);
             else
-                await editTask(id, heading, content, date);
+                await editTask(id, heading, content, date, priority);
             reset();
         });
 
         // Добавление пользователя
-        async function createTask(newContent, heading, date) {
-
+        async function createTask(newContent, heading, date, priority) {
+            if (priority == "")
+                priority=null;
             const response = await fetch("api/tasks", {
                 method: "POST",
                 headers: { "Accept": "application/json", "Content-Type": "application/json" },
                 body: JSON.stringify({
                     heading: heading,
                     content: newContent,
-                    date: date
+                    date: date,
+                    priority: priority
                 })
             });
             if (response.ok === true) {
@@ -165,7 +172,7 @@
         }
 
         // Изменение пользователя
-        async function editTask(taskId, heading, content, date) {
+        async function editTask(taskId, heading, content, date, priority) {
             const response = await fetch("api/tasks", {
                 method: "PUT",
                 headers: { "Accept": "application/json", "Content-Type": "application/json" },
@@ -173,7 +180,8 @@
                     id: taskId,
                     heading: heading,
                     content: content,
-                    date: date
+                    date: date,
+                    priority: priority
                 })
             });
             if (response.ok === true) {
@@ -203,14 +211,15 @@
             }
         }
 
-         // сброс данных формы после отправки
-         function reset() {
+        // сброс данных формы после отправки
+        function reset() {
             document.querySelectorAll('.mainForm input').forEach((item) => {
                 item.value = "";
             });
         }
 
         getTasks();
+
     </script>
 </body>
 

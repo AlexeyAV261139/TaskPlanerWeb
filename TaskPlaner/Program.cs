@@ -134,7 +134,7 @@ async Task UpdateMyTask(HttpResponse response, HttpRequest request)
         {
             using (ApplicationContext db = new ApplicationContext())
             {
-                // получаем пользователя по id
+                // получаем задачу по id
                 var myTask = db.MyTasks.FirstOrDefault(t => t.Id == myTaskData.Id);
                 // если пользователь найден, изменяем его данные и отправляем обратно клиенту
                 if (myTask != null)
@@ -142,6 +142,7 @@ async Task UpdateMyTask(HttpResponse response, HttpRequest request)
                     myTask.Heading = myTaskData.Heading;
                     myTask.Content = myTaskData.Content;
                     myTask.Date = myTaskData.Date;
+                    myTask.Priority = myTaskData.Priority;
                     db.SaveChanges();
                     await response.WriteAsJsonAsync(myTask);
                 }
