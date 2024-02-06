@@ -129,7 +129,10 @@ async function createTask(content, heading, date, priority) {
 // Изменение пользователя
 async function editTask(taskId, heading, content, date, priority) {
 
-
+    if (priority == "")
+        priority = null;
+    if (date == "")
+        date = null;
     const response = await fetch("api/tasks", {
         method: "PUT",
         headers: { "Accept": "application/json", "Content-Type": "application/json" },
