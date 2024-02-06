@@ -97,19 +97,24 @@ document.getElementById("saveBtn").addEventListener("click", async () => {
 });
 
 // Добавление пользователя
-async function createTask(newContent, heading, date, priority) {
+async function createTask(content, heading, date, priority) {
     if (priority == "")
         priority = null;
+    if (date == "")
+        date = null;
+
+    body = JSON.stringify({
+        heading: heading,
+        content: content,
+        date: date,
+        priority: priority
+    });
     const response = await fetch("api/tasks", {
         method: "POST",
         headers: { "Accept": "application/json", "Content-Type": "application/json" },
-        body: JSON.stringify({
-            heading: heading,
-            content: newContent,
-            date: date,
-            priority: priority
-        })
+        body: body
     });
+
     if (response.ok === true) {
         const user = await response.json();
         const tasks = document.getElementById("tasks");
@@ -123,6 +128,8 @@ async function createTask(newContent, heading, date, priority) {
 
 // Изменение пользователя
 async function editTask(taskId, heading, content, date, priority) {
+
+
     const response = await fetch("api/tasks", {
         method: "PUT",
         headers: { "Accept": "application/json", "Content-Type": "application/json" },
