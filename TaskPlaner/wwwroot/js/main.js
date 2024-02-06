@@ -1,15 +1,15 @@
 async function getTasks() {
-    // Ð¾Ñ‚Ð¿Ñ€Ð°Ð²Ð»ÑÐµÑ‚ Ð·Ð°Ð¿Ñ€Ð¾Ñ Ð¸ Ð¿Ð¾Ð»ÑƒÑ‡Ð°ÐµÐ¼ Ð¾Ñ‚Ð²ÐµÑ‚
+    // îòïðàâëÿåò çàïðîñ è ïîëó÷àåì îòâåò
     const response = await fetch("/api/tasks", {
         method: "GET",
         headers: { "Accept": "application/json" }
     });
-    // ÐµÑÐ»Ð¸ Ð·Ð°Ð¿Ñ€Ð¾Ñ Ð¿Ñ€Ð¾ÑˆÐµÐ» Ð½Ð¾Ñ€Ð¼Ð°Ð»ÑŒÐ½Ð¾
+    // åñëè çàïðîñ ïðîøåë íîðìàëüíî
     if (response.ok === true) {
-        // Ð¿Ð¾Ð»ÑƒÑ‡Ð°ÐµÐ¼ Ð´Ð°Ð½Ð½Ñ‹Ðµ
+        // ïîëó÷àåì äàííûå
         const users = await response.json();
         const tasks = document.getElementById("tasks");
-        // Ð´Ð¾Ð±Ð°Ð²Ð»ÑÐµÐ¼ Ð¿Ð¾Ð»ÑƒÑ‡ÐµÐ½Ð½Ñ‹Ðµ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ñ‹ Ð² Ñ‚Ð°Ð±Ð»Ð¸Ñ†Ñƒ
+        // äîáàâëÿåì ïîëó÷åííûå ýëåìåíòû â òàáëèöó
         users.forEach(user => tasks.append(taskLine(user)));
     }
 }
@@ -28,13 +28,13 @@ async function getTask(id) {
         document.getElementById('priority').value = task.priority;
     }
     else {
-        // ÐµÑÐ»Ð¸ Ð¿Ñ€Ð¾Ð¸Ð·Ð¾ÑˆÐ»Ð° Ð¾ÑˆÐ¸Ð±ÐºÐ°, Ð¿Ð¾Ð»ÑƒÑ‡Ð°ÐµÐ¼ ÑÐ¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ðµ Ð¾Ð± Ð¾ÑˆÐ¸Ð±ÐºÐµ
+        // åñëè ïðîèçîøëà îøèáêà, ïîëó÷àåì ñîîáùåíèå îá îøèáêå
         const error = await response.json();
-        console.log(error.message); // Ð¸ Ð²Ñ‹Ð²Ð¾Ð´Ð¸Ð¼ ÐµÐ³Ð¾ Ð½Ð° ÐºÐ¾Ð½ÑÐ¾Ð»ÑŒ
+        console.log(error.message); // è âûâîäèì åãî íà êîíñîëü
     }
 }
 
-// ÑÐ¾Ð·Ð´Ð°Ð½Ð¸Ðµ Ð±Ð»Ð¾ÐºÐ° Ð·Ð°Ð´Ð°Ñ‡Ð¸
+// ñîçäàíèå áëîêà çàäà÷è
 function taskLine(task) {
 
     let li = document.createElement('li');
@@ -61,12 +61,12 @@ function taskLine(task) {
     const linksP = document.createElement("p");
 
     const editLink = document.createElement("button");
-    editLink.append("Ð˜Ð·Ð¼ÐµÐ½Ð¸Ñ‚ÑŒ");
+    editLink.append("Èçìåíèòü");
     editLink.addEventListener("click", async () => await getTask(task.id));
     linksP.append(editLink);
 
     const removeLink = document.createElement("button");
-    removeLink.append("Ð£Ð´Ð°Ð»Ð¸Ñ‚ÑŒ");
+    removeLink.append("Óäàëèòü");
     removeLink.addEventListener("click", async () => {
         await deleteUser(task.id);
     });
@@ -77,10 +77,10 @@ function taskLine(task) {
     return li;
 }
 
-// ÑÐ±Ñ€Ð¾Ñ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ð¹ Ñ„Ð¾Ñ€Ð¼Ñ‹
+// ñáðîñ çíà÷åíèé ôîðìû
 document.getElementById("resetBtn").addEventListener("click", () => reset());
 
-// Ð¾Ñ‚Ð¿Ñ€Ð°Ð²ÐºÐ° Ñ„Ð¾Ñ€Ð¼Ñ‹
+// îòïðàâêà ôîðìû
 document.getElementById("saveBtn").addEventListener("click", async () => {
 
     const id = document.getElementById("taskId").value;
@@ -96,7 +96,7 @@ document.getElementById("saveBtn").addEventListener("click", async () => {
     reset();
 });
 
-// Ð”Ð¾Ð±Ð°Ð²Ð»ÐµÐ½Ð¸Ðµ Ð¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»Ñ
+// Äîáàâëåíèå ïîëüçîâàòåëÿ
 async function createTask(newContent, heading, date, priority) {
     if (priority == "")
         priority=null;
@@ -121,7 +121,7 @@ async function createTask(newContent, heading, date, priority) {
     }
 }
 
-// Ð˜Ð·Ð¼ÐµÐ½ÐµÐ½Ð¸Ðµ Ð¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»Ñ
+// Èçìåíåíèå ïîëüçîâàòåëÿ
 async function editTask(taskId, heading, content, date, priority) {
     const response = await fetch("api/tasks", {
         method: "PUT",
@@ -144,7 +144,7 @@ async function editTask(taskId, heading, content, date, priority) {
     }
 }
 
-// Ð£Ð´Ð°Ð»ÐµÐ½Ð¸Ðµ Ð·Ð°Ð´Ð°Ñ‡Ð¸
+// Óäàëåíèå çàäà÷è
 async function deleteUser(id) {
     const response = await fetch(`/api/tasks/${id}`, {
         method: "DELETE",
@@ -161,7 +161,7 @@ async function deleteUser(id) {
     }
 }
 
-// ÑÐ±Ñ€Ð¾Ñ Ð´Ð°Ð½Ð½Ñ‹Ñ… Ñ„Ð¾Ñ€Ð¼Ñ‹ Ð¿Ð¾ÑÐ»Ðµ Ð¾Ñ‚Ð¿Ñ€Ð°Ð²ÐºÐ¸
+// ñáðîñ äàííûõ ôîðìû ïîñëå îòïðàâêè
 function reset() {
     document.querySelectorAll('.mainForm input').forEach((item) => {
         item.value = "";
