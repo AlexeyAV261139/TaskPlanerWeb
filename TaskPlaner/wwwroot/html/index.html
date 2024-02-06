@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task planner</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <main>
+        <section>
+            <h2>Планировщик задач</h2>
+            <article>
+                <div class="mainForm">
+                    <input type="hidden" id="taskId" />
+                    <p>
+                        Название:<br />
+                        <input id="heading" />
+                    </p>
+                    <p>
+                        Содержание:<br />
+                        <input id="content" />
+                    </p>
+                    <p>
+                        Дата:<br />
+                        <input type="date" id="date" />
+                    </p>
+                    <p>
+                        Приоритет задачи: <br />
+                        <input type="number" id="priority" />
+                    </p>
+                    <p>
+                        <button id="saveBtn">Сохранить</button>
+                        <button id="resetBtn">Сбросить</button>
+                    </p>
+                </div>
+            </article>
+        </section>
+        <section>
+            <article>
+                <h3>Задачи:</h3>
+                <ul id="tasks">
+                </ul>
+
+
+            </article>
+        </section>
+    </main>
+    <script src="/js/main.js"></script>
+</body>
+
+</html>
