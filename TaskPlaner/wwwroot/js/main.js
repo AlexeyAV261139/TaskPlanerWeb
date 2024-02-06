@@ -99,7 +99,7 @@ document.getElementById("saveBtn").addEventListener("click", async () => {
 // Добавление пользователя
 async function createTask(newContent, heading, date, priority) {
     if (priority == "")
-        priority = null;
+        priority=null;
     const response = await fetch("api/tasks", {
         method: "POST",
         headers: { "Accept": "application/json", "Content-Type": "application/json" },
