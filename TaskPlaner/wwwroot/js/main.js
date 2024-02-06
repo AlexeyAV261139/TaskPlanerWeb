@@ -98,14 +98,16 @@ document.getElementById("saveBtn").addEventListener("click", async () => {
 
 // Добавление пользователя
 async function createTask(newContent, heading, date, priority) {
-
+    if (priority == "")
+        priority=null;
     const response = await fetch("api/tasks", {
         method: "POST",
         headers: { "Accept": "application/json", "Content-Type": "application/json" },
         body: JSON.stringify({
             heading: heading,
             content: newContent,
-            date: date
+            date: date,
+            priority: priority
         })
     });
     if (response.ok === true) {

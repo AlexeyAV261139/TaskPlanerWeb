@@ -10,4 +10,10 @@
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\html\index.html" />
+    <None Include="wwwroot\js\main.js" />
+    <None Include="wwwroot\css\styles.css" />
+  </ItemGroup>
+
 </Project>

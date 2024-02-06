@@ -1,7 +1,10 @@
+using Microsoft.Extensions.FileProviders;
 using System.Text.RegularExpressions;
 
 var builder = WebApplication.CreateBuilder();
 var app = builder.Build();
+
+app.UseStaticFiles();
 
 app.Run(async (context) =>
 {
@@ -38,7 +41,7 @@ app.Run(async (context) =>
     else
     {
         response.ContentType = "text/html; charset=utf-8";
-        await response.SendFileAsync("html/index.html");
+        await response.SendFileAsync("wwwroot/html/index.html");
     }
 });
 
