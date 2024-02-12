@@ -7,6 +7,7 @@
     <title>Task planner</title>
     <link rel="stylesheet" href="/css/styles.css">
 </head>
+
 <body>
     <main>
         <section>
@@ -40,6 +41,15 @@
         <section>
             <article>
                 <h3>Задачи:</h3>
+                <form method="get">
+                    <p>
+                        <label for="sortBy">Сортировать по:</label>
+                        <select id="sortBy" name="sortBy">
+                            <option value="non">-</option>
+                            <option value="date">Дате</option>                           
+                        </select>
+                    </p>                    
+                </form>
                 <ul id="tasks">
                 </ul>
 
