@@ -5,12 +5,11 @@ public class ApplicationContext : DbContext
 {
     public DbSet<MyTask> MyTasks { get; set; } = null!;
 
-    public ApplicationContext()
+    public ApplicationContext(DbContextOptions<ApplicationContext> options)
+        : base(options)
     {
     }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=TaskManager;Username=postgres;Password=qwerty");
-    }
-
+    }  
 }
