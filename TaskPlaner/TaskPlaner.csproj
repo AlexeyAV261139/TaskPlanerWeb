@@ -15,9 +15,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\html\index.html" />
+    <None Include="wwwroot\index.html" />
     <None Include="wwwroot\js\main.js" />
     <None Include="wwwroot\css\styles.css" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\html\" />
   </ItemGroup>
 
 </Project>
