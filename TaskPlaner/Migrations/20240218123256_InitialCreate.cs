@@ -15,7 +15,7 @@ namespace TaskPlaner.Migrations
                 name: "MyTasks",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "text", nullable: false),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Heading = table.Column<string>(type: "text", nullable: false),
                     Content = table.Column<string>(type: "text", nullable: false),
                     Date = table.Column<DateOnly>(type: "date", nullable: true),
@@ -25,6 +25,19 @@ namespace TaskPlaner.Migrations
                 {
                     table.PrimaryKey("PK_MyTasks", x => x.Id);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "Persons",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Email = table.Column<string>(type: "text", nullable: false),
+                    Password = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Persons", x => x.Id);
+                });
         }
 
         /// <inheritdoc />
@@ -32,6 +45,9 @@ namespace TaskPlaner.Migrations
         {
             migrationBuilder.DropTable(
                 name: "MyTasks");
+
+            migrationBuilder.DropTable(
+                name: "Persons");
         }
     }
 }

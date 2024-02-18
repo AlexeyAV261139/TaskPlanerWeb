@@ -5,12 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-
-var people = new List<Person>
- {
-    new Person("tom@gmail.com", "12345"),
-    new Person("bob@gmail.com", "55555")
-};
+using TaskPlaner;
 
 var builder = WebApplication.CreateBuilder();
 string connection = builder.Configuration.GetConnectionString("DefaultConnection") ??
@@ -54,9 +49,9 @@ app.MapGet("/login", async (context) =>
     await context.Response.SendFileAsync("wwwroot/html/Authorization.html");
 });
 
-app.MapPost("/login", (Person loginData) =>
+app.MapPost("/login", (Person loginData, ApplicationContext db) =>
 {
-    Person? person = people.FirstOrDefault(p => p.Email == loginData.Email &&
+    Person? person = db.Persons.FirstOrDefault(p => p.Email == loginData.Email &&
     p.Password == loginData.Password);
 
     if (person == null) return Results.Unauthorized();
@@ -86,7 +81,7 @@ app.Map("/data", [Authorize] () => new { message = "Hello World!" });
 #region
 app.MapGet("/api/tasks", async (ApplicationContext db) => await db.MyTasks.ToListAsync());
 
-app.MapGet("/api/tasks/{id:guid}", async (string id, ApplicationContext db) =>
+app.MapGet("/api/tasks/{id:guid}", async (Guid id, ApplicationContext db) =>
 {
     MyTask? task = await db.MyTasks.FirstOrDefaultAsync(t => t.Id == id);
 
@@ -116,7 +111,7 @@ app.MapPut("/api/tasks", async (MyTask taskData, ApplicationContext db) =>
     return Results.Json(task);
 });
 
-app.MapDelete("/api/tasks/{id:guid}", async (string id, ApplicationContext db) =>
+app.MapDelete("/api/tasks/{id:guid}", async (Guid id, ApplicationContext db) =>
 {
     MyTask? task = await db.MyTasks.FirstOrDefaultAsync(t => t.Id == id);
     if (task == null) return Results.NotFound(new { message = "Пользователь не найден" });
@@ -136,5 +131,3 @@ public class AuthOptions
     public static SymmetricSecurityKey GetSymmetricSecurityKey() =>
         new SymmetricSecurityKey(Encoding.UTF8.GetBytes(KEY));
 }
-
-record class Person(string Email, string Password);
