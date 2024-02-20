@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using TaskPlaner.Entityes;
 
 namespace TaskPlaner
 {
