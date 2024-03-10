@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using TaskPlaner.DB.Entityes;
 
-namespace TaskPlaner
+namespace TaskPlaner.DB
 {
     public class ApplicationContext : DbContext
     {

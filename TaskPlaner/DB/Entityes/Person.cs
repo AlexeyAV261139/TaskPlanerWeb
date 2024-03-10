@@ -1,4 +1,4 @@
-﻿namespace TaskPlaner
+﻿namespace TaskPlaner.DB.Entityes
 {
     public class Person
     {
