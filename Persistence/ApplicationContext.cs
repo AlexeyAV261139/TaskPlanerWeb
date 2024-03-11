@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TaskPlaner.DB.Entityes;
+using API.DB.Entityes;
 
-namespace TaskPlaner.DB
+namespace Persistence
 {
     public class ApplicationContext : DbContext
     {

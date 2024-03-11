@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Logic.Stores
+﻿namespace Logic.Stores
 {
     public interface ITaskStore
     {
-        Task<IReadOnlyList<MyTask>> GetByFilter(OrderFilter filter);
+        Task<IReadOnlyList<MyTask>> GetByFilter(MyTaskFilter filter);
 
         Task<MyTask> GetById(Guid id);
 

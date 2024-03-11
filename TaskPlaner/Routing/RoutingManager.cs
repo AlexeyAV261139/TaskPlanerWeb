@@ -1,13 +1,16 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Persistence;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using TaskPlaner.DB;
-using TaskPlaner.DB.Entityes;
+using API.DB.Entityes;
+using Application;
 
-public static class RoutingManager
+public class RoutingManager
 {
+    private readonly MyTaskService _myTaskService;
+
     public static void Auth(WebApplication app)
     {
         app.MapGet("/login", async (context) =>
@@ -54,6 +57,7 @@ public static class RoutingManager
 
         app.MapGet("/api/tasks/{id:guid}", async (Guid id, ApplicationContext db) =>
         {
+            
             MyTask? task = await db.MyTasks.FirstOrDefaultAsync(t => t.Id == id);
 
             if (task == null) Results.NotFound(new { messege = "Задача не найдена" });

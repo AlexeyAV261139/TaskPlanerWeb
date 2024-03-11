@@ -36,6 +36,7 @@ namespace Application
             {
                 throw new Exception();
             }
+            await _taskStore.Add(myTask);
         }
     }
 }

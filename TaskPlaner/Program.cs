@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using TaskPlaner.DB;
+using Persistence;
 
 var builder = WebApplication.CreateBuilder();
 

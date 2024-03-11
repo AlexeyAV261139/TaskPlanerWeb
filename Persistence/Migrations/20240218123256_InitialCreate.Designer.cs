@@ -5,11 +5,12 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using TaskPlaner.DB;
+using Persistence;
+
 
 #nullable disable
 
-namespace TaskPlaner.Migrations
+namespace API.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
     [Migration("20240218123256_InitialCreate")]
